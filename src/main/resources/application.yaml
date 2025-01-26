@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: ai-workbench-backend
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+    openai:
+      api-key: ${OPENAI_API_KEY}
