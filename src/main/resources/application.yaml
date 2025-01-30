@@ -6,3 +6,17 @@ spring:
       base-url: http://localhost:11434
     openai:
       api-key: ${OPENAI_API_KEY}
+
+workbench:
+  mappings:
+    chatMappings:
+      OLLAMA:
+        models:
+          - llama3.2
+          - mistral
+        handlerClass: com.emirant1.aiworkbenchbackend.chat.model.OllamaChatModelHandler
+      OPENAI:
+        models:
+          - gpt-4o-mini
+          - gpt-4o
+        handlerClass: com.emirant1.aiworkbenchbackend.chat.model.OpenAiChatModelHandler
