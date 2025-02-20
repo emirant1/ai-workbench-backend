@@ -14,6 +14,9 @@ workbench:
         models:
           - llama3.2
           - mistral
+          - deepseek-r1
+          - deepseek-coder-v2
+          - codellama
         handlerClass: com.emirant1.aiworkbenchbackend.chat.model.OllamaChatModelHandler
       OPENAI:
         models:

@@ -1,5 +1,8 @@
 package com.emirant1.aiworkbenchbackend.chat.model;
 
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.ollama.OllamaChatModel;
@@ -10,10 +13,13 @@ import reactor.core.publisher.Flux;
 @Component
 public class OllamaChatModelHandler implements ChatModelHandler {
 
-    private final OllamaChatModel chatModel;
+    /* Other instance variables */
+    private final ChatClient chatClient;
 
     public OllamaChatModelHandler(OllamaChatModel chatModel){
-        this.chatModel = chatModel;
+        this.chatClient = ChatClient.builder(chatModel)
+                .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+                .build();
     }
 
     @Override
@@ -25,9 +31,9 @@ public class OllamaChatModelHandler implements ChatModelHandler {
                 .temperature(0.4)
                 .build();
 
-        Prompt prompt = new Prompt(userMessage, chatOptions);
 
-        return chatModel.stream(prompt)
-                .map(response -> response.getResult().getOutput().getContent());
+        return chatClient.prompt(new Prompt(userMessage, chatOptions))
+                .stream()
+                .content();
     }
 }
